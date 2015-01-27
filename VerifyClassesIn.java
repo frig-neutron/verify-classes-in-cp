@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.logging.*;
 import java.util.*;
+import java.net.*;
 
 /**
  * Try to load all classes from .class files accessible by scanning 
@@ -14,7 +15,7 @@ import java.util.*;
  */
 public class VerifyClassesIn
 {
-	final ClassLoader cl = Thread.currentThread().getContextClassLoader();
+	ClassLoader cl = Thread.currentThread().getContextClassLoader();
   final Logger logger = Logger.getAnonymousLogger();
 
   public static void main(String [] args) 
@@ -93,9 +94,11 @@ public class VerifyClassesIn
     }
 	}
 
-	private Set<String> findClasses(File dir) throws ClassNotFoundException
+	private Set<String> findClasses(File dir) throws ClassNotFoundException, MalformedURLException
 	{
     logger.log(FINE, "Scanning dir "+dir.getAbsolutePath());
+    URL scanURL = dir.toURI().toURL();
+    cl = new URLClassLoader(new URL[] { scanURL });
 		Set<File> classFiles = new HashSet<File>();
 		findClasses(dir, classFiles);
 
