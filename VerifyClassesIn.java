@@ -32,7 +32,9 @@ public class VerifyClassesIn
         dirs = new LinkedList<File>();
         dirs.add(new File(args[0]));
       }
-      new VerifyClassesIn(INFO).scan(dirs);
+      String requestedLogLevel = System.getProperty("logLevel", "INFO");
+      Level logLevel = Level.parse(requestedLogLevel);
+      new VerifyClassesIn(logLevel).scan(dirs);
     }
     catch(Exception e)
     {
